@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Network Monitoring Dashboard</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar Navigation -->
+        <nav class="sidebar">
+            <div class="sidebar-header">
+                <i class="fas fa-network-wired"></i>
+                <span>NetMonitor</span>
+            </div>
+            <ul class="nav-menu">
+                <li class="nav-item active" data-page="dashboard">
+                    <i class="fas fa-tachometer-alt"></i>
+                    <span>Dashboard</span>
+                </li>
+                <li class="nav-item" data-page="computer">
+                    <i class="fas fa-desktop"></i>
+                    <span>Computer</span>
+                </li>
+                <li class="nav-item" data-page="analytic">
+                    <i class="fas fa-chart-line"></i>
+                    <span>Analytic</span>
+                </li>
+                <li class="nav-item" data-page="settings">
+                    <i class="fas fa-cog"></i>
+                    <span>Settings</span>
+                </li>
+            </ul>
+        </nav>
+
+        <!-- Main Content Area -->
+        <main class="main-content">
+            <!-- Header -->
+            <header class="header">
+                <div class="header-left">
+                    <button class="menu-toggle" id="menuToggle">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                    <h1 id="pageTitle">Dashboard</h1>
+                </div>
+                <div class="header-right">
+                    <div class="status-indicator online">
+                        <span class="status-dot"></span>
+                        <span>System Online</span>
+                    </div>
+                    <div class="notifications">
+                        <i class="fas fa-bell"></i>
+                        <span class="badge">3</span>
+                    </div>
+                    <div class="user-profile">
+                        <img src="https://ui-avatars.com/api/?name=Admin&background=0D8ABC&color=fff" alt="User">
+                        <span>Admin</span>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Dashboard Page -->
+            <section class="page active" id="dashboard">
+                <div class="dashboard-grid">
+                    <!-- Overview Cards -->
+                    <div class="card overview-card">
+                        <div class="card-icon blue">
+                            <i class="fas fa-computer"></i>
+                        </div>
+                        <div class="card-content">
+                            <h3>CPU</h3>
+                            <h2 id="cpuValue">0%</h2>
+                            <span class="trend up"><i class="fas fa-arrow-up"></i></span>
+                        </div>
+                    </div>
+                    <div class="card overview-card">
+                        <div class="card-icon green">
+                            <i class="fas fa-network-wired"></i>
+                        </div>
+                        <div class="card-content">
+                            <h3>RAM</h3>
+                            <h2 id="ramValue">0%</h2>
+                            <span class="trend stable"><i class="fas fa-minus"></i></span>
+                        </div>
+                    </div>
+                    <div class="card overview-card">
+                        <div class="card-icon orange">
+                            <i class="fas fa-exclamation-triangle"></i>
+                        </div>
+                        <div class="card-content">
+                            <h3>Storage</h3>
+                            <h2 id="storageValue">0%</h2>
+                            
+                        </div>
+                    </div>
+                    <div class="card overview-card">
+                        <div class="card-icon purple">
+                            <i class="fas fa-chart-pie"></i>
+                        </div>
+                        <div class="card-content">
+                            <h3>Uptime</h3>
+                            <h2 id="uptimeValue">0m</h2>
+                            
+                        </div>
+                    </div>
+
+                    <!-- Network Traffic Chart -->
+                   <div class="card chart-card">
+                    <div class="card-header">
+                    <h3>Network Traffic</h3>
+
+                    <select class="time-filter">
+                    <option value="1h">Last Hour</option>
+                    <option value="24h">Last 24 Hours</option>
+                    <option value="7d">Last 7 Days</option>
+                    </select>
+                </div>
+
+    <div class="chart-container">
+        <canvas id="trafficChart"></canvas>
+    </div>
+</div>
+    <div class="device-list" id="deviceList">
+
+    <div class="device-item">
+        <div class="device-info">
+            <i class="fas fa-desktop online"></i>
+            <div>
+                <p class="device-name" id="deviceName">Loading...</p>
+                <span class="device-ip" id="deviceIp">0.0.0.0</span>
+                <span id="deviceUser">Unknown User</span>
+            </div>
+        </div>
+        <span class="status online" id="deviceStatus">Online</span>
+    </div>
+</div>
+
+                    <!-- Recent Alerts -->
+                    <div class="alerts-list" id="alertsList">
+                    <p style="color:#888">No alerts</p>
+                </div>
+            </section>
+
+            <!-- Computer Page -->
+            <section class="page" id="computer">
+                <div class="page-header">
+                    <h2>Computer Management</h2>
+                    <button class="btn-primary" id="addComputerBtn">Add Computer</button>
+                </div>
+                <div class="table-container">
+                    <div class="table-filters">
+                        <input type="text" placeholder="Search computers..." class="search-input">
+                        <select class="filter-select">
+                            <option value="all">All Status</option>
+                            <option value="online">Online</option>
+                            <option value="offline">Offline</option>
+                            <option value="warning">Warning</option>
+                        </select>
+                    </div>
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>IP Address</th>
+                                <th>OS</th>
+                                <th>CPU</th>
+                                <th>RAM</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            <tbody id="computerTableBody">
+                        
+                            </tbody>
+
+                    </table>
+                    <div class="table-pagination">
+                        <span>Showing 1-5 of 24 computers</span>
+                        <div class="pagination-controls">
+                            <button class="btn-page"><i class="fas fa-chevron-left"></i></button>
+                            <button class="btn-page active">1</button>
+                            <button class="btn-page">2</button>
+                            <button class="btn-page">3</button>
+                            <button class="btn-page"><i class="fas fa-chevron-right"></i></button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            
+
+            <!-- Analytic Page -->
+            <section class="page" id="analytic">
+                <div class="page-header">
+                    <h2>Analytics & Reports</h2>
+                    <div class="date-range">
+                        <input type="date" class="date-input">
+                        <span>to</span>
+                        <input type="date" class="date-input">
+                        <button class="btn-primary"><i class="fas fa-download"></i> Export</button>
+                    </div>
+                </div>
+                <div class="analytics-grid">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3>Bandwidth Usage</h3>
+                        </div>
+                        <div class="chart-container">
+                            <canvas id="bandwidthChart"></canvas>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-header">
+                            <h3>Traffic Distribution</h3>
+                        </div>
+                        <div class="chart-container pie-chart">
+                            <canvas id="trafficChart"></canvas>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-header">
+                            <h3>Device Performance</h3>
+                        </div>
+                        <div class="performance-list" id="performanceList"></div>
+                            <div class="performance-item">
+                                <div class="perf-header">
+                                    <span>Server-Main</span>
+                                    <span>89%</span>
+                                </div>
+                                <div class="progress-bar">
+                                    <div class="progress" style="width: 89%; background: #e74c3c;"></div>
+                                </div>
+                            </div>
+                            <div class="performance-item">
+                                <div class="perf-header">
+                                    <span>Workstation-02</span>
+                                    <span>45%</span>
+                                </div>
+                                <div class="progress-bar">
+                                    <div class="progress" style="width: 45%; background: #f39c12;"></div>
+                                </div>
+                            </   div>
+                            <div class="performance-item">
+                                <div class="perf-header">
+                                    <span>Workstation-01</span>
+                                    <span>23%</span>
+                                </div>
+                                <div class="progress-bar">
+                                    <div class="progress" style="width: 23%; background: #2ecc71;"></div>
+                                </div>
+                            </div>
+                            <div class="performance-item">
+                                <div class="perf-header">
+                                    <span>Laptop-Sales</span>
+                                    <span>12%</span>
+                                </div>
+                                <div class="progress-bar">
+                                    <div class="progress" style="width: 12%; background: #3498db;"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-header">
+                            <h3>Network Health Score</h3>
+                        </div>
+                        <div class="health-score">
+                            <div class="score-circle">
+                                <svg viewBox="0 0 100 100">
+                                    <circle cx="50" cy="50" r="45" class="score-bg"/>
+                                    <circle cx="50" cy="50" r="45" class="score-fill" style="stroke-dasharray: 283; stroke-dashoffset: 28;"/>
+                                </svg>
+                                <div class="score-value">
+                                    <span id="healthScore">0</span>
+                                    <small>/ 100</small>
+                                </div>
+                            </div>
+                            <div class="score-details">
+                                <div class="score-item">
+                                    <span class="label">Availability</span>
+                                    <span class="value good" id="availabilityValue">0%</span>
+                                </div>
+                                <div class="score-item">
+                                    <span class="label">Latency</span>
+                                    <span class="value good" id="latencyValue">0 ms</span>
+                                </div>
+                                <div class="score-item">
+                                    <span class="label">Packet Loss</span>
+                                    <span class="value excellent">0.01%</span>
+                                </div>
+                                <div class="score-item">
+                                    <span class="label">Jitter</span>
+                                    <span class="value good">3ms</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Settings Page -->
+            <section class="page" id="settings">
+                <div class="page-header">
+                    <h2>Settings</h2>
+                </div>
+                <div class="settings-grid">
+                    <div class="card settings-card">
+                        <div class="card-header">
+                            <h3><i class="fas fa-bell"></i> Notifications</h3>
+                        </div>
+                        <div class="settings-content">
+                            <div class="setting-item">
+                                <div class="setting-info">
+                                    <p>Email Alerts</p>
+                                    <span>Receive email notifications for critical alerts</span>
+                                </div>
+                                <label class="toggle">
+                                    <input type="checkbox" checked>
+                                    <span class="toggle-slider"></span>
+                                </label>
+                            </div>
+                            <div class="setting-item">
+                                <div class="setting-info">
+                                    <p>SMS Notifications</p>
+                                    <span>Get SMS for urgent network issues</span>
+                                </div>
+                                <label class="toggle">
+                                    <input type="checkbox">
+                                    <span class="toggle-slider"></span>
+                                </label>
+                            </div>
+                            <div class="setting-item">
+                                <div class="setting-info">
+                                    <p>Desktop Notifications</p>
+                                    <span>Show browser notifications</span>
+                                </div>
+                                <label class="toggle">
+                                    <input type="checkbox" checked>
+                                    <span class="toggle-slider"></span>
+                                </label>
+                            </div>
+                            <div class="setting-item">
+                                <div class="setting-info">
+                                    <p>Alert Threshold</p>
+                                    <span>Minimum severity level for notifications</span>
+                                </div>
+                                <select class="setting-select">
+                                    <option>Low</option>
+                                    <option selected>Medium</option>
+                                    <option>High</option>
+                                    <option>Critical</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card settings-card">
+                        <div class="card-header">
+                            <h3><i class="fas fa-chart-line"></i> Monitoring</h3>
+                        </div>
+                        <div class="settings-content">
+                            <div class="setting-item">
+                                <div class="setting-info">
+                                    <p>Polling Interval</p>
+                                    <span>How often to check device status</span>
+                                </div>
+                                <select class="setting-select">
+                                    <option>30 seconds</option>
+                                    <option selected>1 minute</option>
+                                    <option>5 minutes</option>
+                                    <option>10 minutes</option>
+                                </select>
+                            </div>
+                            <div class="setting-item">
+                                <div class="setting-info">
+                                    <p>Auto-discover Devices</p>
+                                    <span>Automatically detect new network devices</span>
+                                </div>
+                                <label class="toggle">
+                                    <input type="checkbox" checked>
+                                    <span class="toggle-slider"></span>
+                                </label>
+                            </div>
+                            <div class="setting-item">
+                                <div class="setting-info">
+                                    <p>Historical Data Retention</p>
+                                    <span>How long to keep monitoring data</span>
+                                </div>
+                                <select class="setting-select">
+                                    <option>7 days</option>
+                                    <option selected>30 days</option>
+                                    <option>90 days</option>
+                                    <option>1 year</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card settings-card">
+                        <div class="card-header">
+                            <h3><i class="fas fa-user-shield"></i> Security</h3>
+                        </div>
+                        <div class="settings-content">
+                            <div class="setting-item">
+                                <div class="setting-info">
+                                    <p>Two-Factor Authentication</p>
+                                    <span>Add extra security to your account</span>
+                                </div>
+                                <label class="toggle">
+                                    <input type="checkbox" checked>
+                                    <span class="toggle-slider"></span>
+                                </label>
+                            </div>
+                            <div class="setting-item">
+                                <div class="setting-info">
+                                    <p>Session Timeout</p>
+                                    <span>Auto-logout after inactivity</span>
+                                </div>
+                                <select class="setting-select">
+                                    <option>15 minutes</option>
+                                    <option selected>30 minutes</option>
+                                    <option>1 hour</option>
+                                    <option>Never</option>
+                                </select>
+                            </div>
+                            <div class="setting-item">
+                                <button class="btn-secondary"><i class="fas fa-key"></i> Change Password</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card settings-card">
+                        <div class="card-header">
+                            <h3><i class="fas fa-palette"></i> Appearance</h3>
+                        </div>
+                        <div class="settings-content">
+                            <div class="setting-item">
+                                <div class="setting-info">
+                                    <p>Theme</p>
+                                    <span>Choose your preferred color scheme</span>
+                                </div>
+                                <select class="setting-select" id="themeSelect">
+                                    <option value="dark" selected>Dark</option>
+                                    <option value="light">Light</option>
+                                    <option value="auto">Auto</option>
+                                </select>
+                            </div>
+                            <div class="setting-item">
+                                <div class="setting-info">
+                                    <p>Compact Mode</p>
+                                    <span>Reduce spacing for more data</span>
+                                </div>
+                                <label class="toggle">
+                                    <input type="checkbox">
+                                    <span class="toggle-slider"></span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="settings-actions">
+                    <button class="btn-secondary">Reset to Defaults</button>
+                    <button class="btn-primary">Save Changes</button>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Toast Notification Container -->
+    <div class="toast-container" id="toastContainer"></div>
+
+
+    <script src="https://unpkg.com/mqtt/dist/mqtt.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="js/app.js"></script>
+    
+
+</body>
+</html>
